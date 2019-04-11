@@ -42,9 +42,17 @@ public class MyArrayList<T> implements List<T> {
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean add(T element) {
-		// TODO: FILL THIS IN!
+		if(size >= array.length) {
+			//double size of array and copy
+			T[] bigger = (T[]) new Object[array.length * 2];
+			System.arraycopy(array, 0, bigger, 0, array.length);
+			array = bigger;
+		}
+		array[size] = element;
+		size++;
 		return false;
 	}
 
@@ -110,7 +118,11 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public int indexOf(Object target) {
-		// TODO: FILL THIS IN!
+		//iterates through array and returns first instance of target
+		for(int i = 0; i < size; i++) {
+			if(equals(target, get(i)))
+				return i;
+		}
 		return -1;
 	}
 
@@ -181,8 +193,13 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		// TODO: FILL THIS IN!
-		return null;
+		// shift all elements from index+1 to size left and decrement size
+		T removed = get(index);
+		for(int i = index; i < size-1; i++) {
+			set(i, get(i+1));
+		}
+		size--;
+		return removed;
 	}
 
 	@Override
@@ -201,8 +218,9 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: FILL THIS IN!
-		return null;
+		T old = get(index);
+		array[index] = element;
+		return old;
 	}
 
 	@Override
